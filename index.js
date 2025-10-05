@@ -1,46 +1,74 @@
 const express = require('express')
 const app = express()
+
+const cors = require('cors');
+
+const knexConfig = require('./knexfile');
+const knex = require('knex')(knexConfig.development);
+
 const port = 3000
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
-const todos = []
 
-app.post('/todo', (req, res) => {
-    todos.push({
-        "id": todos.length + 1,
-        "title": req.body.title, 
-        "checked": false
-    })
-    console.log(todos)
-    res.send()
-})
+app.use(cors()); 
+app.use(express.static('public'));
 
-app.patch('/todo/:id/checked', (req, res) => {
-    const id = parseInt(req.params.id) //converte para um inteiro
-    const indice = todos.findIndex(objeto => objeto.id === id)
-
-     if (indice === -1) {
-        // Se o item não existe, retorne um erro 404 para o cliente
-        return res.status(404).json({ error: "Tarefa não encontrada. Verifique o id enviado." });
-    }
-
-    todos[indice].checked = true
+app.post('/todo', async (req, res) => {
+    const title = req.body.title
+    const [id]= await knex('tasks').insert({ title });
     res.status(201).send()
 })
 
-app.get('/todo', (req, res) => {
-    res.json(todos)
+app.patch('/todo/:id/checked', async (req, res) => {
+    const id = parseInt(req.params.id) //converte para um inteiro
+    
+    const task = await knex('tasks')
+            .select('completed')
+            .where({ id });
+
+    const newStatus = !task.completed
+
+    await knex('tasks')
+        .where({ id })
+        .update({ completed: newStatus});
+
+    res.status(201).send()
 })
 
-app.get('/todo/statistic', (req, res) => {
-    const completed = todos.filter(objeto => objeto.checked === true)
-    const pending = todos.filter(objeto => objeto.checked === false)
+app.delete('/todo/:id/delete', async (req, res) => {
+    const id = parseInt(req.params.id) //converte para um inteiro
+    
+    const task = await knex('tasks')
+            .where({ id })
+            .del();
 
-    res.json({
-        "completed": completed.length,
-        "pending": pending.length
-    })
+    res.status(204).send()
+})
+
+app.get('/todo', async (req, res) => {
+    const tasks = await knex('tasks').select('*').orderBy('id', 'desc');
+    res.json(tasks)
+})
+
+app.get('/todo/statistic', async (req, res) => {
+        const completedResult = await knex('tasks')
+            .where('completed', true)
+            .count('* as count')
+            .first();
+
+        const pendingResult = await knex('tasks')
+            .where('completed', false) 
+            .count('* as count')
+            .first();
+
+        const completedCount = completedResult.count;
+        const pendingCount = pendingResult.count;
+        
+        res.json({
+            "completed": completedCount,
+            "pending": pendingCount
+        });
 })
 
 app.listen(port, () => {
