@@ -25,7 +25,6 @@ Na pasta raiz do projeto, instale todos os pacotes necessários:
 Esta API utiliza o Knex para gerenciar o banco de dados. Você deve executar a migration para criar a tabela tasks.
 
     npx knex migrate:latest
-    //Executa a migration para criar a tabela 'tasks' no arquivo todo.db
 
 ### 3. Iniciar o Backend (API)
 Inicie o servidor Express. O backend será executado na porta 3000.
