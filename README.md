@@ -10,7 +10,7 @@ Foi desenvolvido com foco principal no aprendizado e consolidação de conceitos
 - Banco de Dados:	SQLite
 - Query Builder:	Knex.js
 
-## 🚀 Exxecutando com o Docker
+## 🚀 Executando com o Docker
 Siga estes passos para configurar e iniciar a API em seu ambiente local.
 
 ### 1. Baixar a imagem
@@ -21,7 +21,9 @@ Siga estes passos para configurar e iniciar a API em seu ambiente local.
 
     docker run -d -p 3000:3000 --name todo-container clarabany/todo-api:latest
 
-* Saída esperada: Example app listening on port 3000
+## 3. Acessar a API:
+
+- A API estará disponível em: http://localhost:3000/todo
 
 ## 🗺️ Endpoints da API
 
