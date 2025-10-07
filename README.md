@@ -19,7 +19,7 @@ Siga estes passos para configurar e iniciar a API em seu ambiente local.
 
 ### 2. Executar o container
 
-    docker run -d -p 3000:3000 --name todo-container clarabany/todo-api:latest
+    docker run -p 3000:3000 --name todo-container clarabany/todo-api:latest
 
 ## 3. Acessar a API:
 
