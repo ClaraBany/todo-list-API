@@ -10,26 +10,16 @@ Foi desenvolvido com foco principal no aprendizado e consolidação de conceitos
 - Banco de Dados:	SQLite
 - Query Builder:	Knex.js
 
-## 🚀 Como Rodar o Projeto
+## 🚀 Exxecutando com o Docker
 Siga estes passos para configurar e iniciar a API em seu ambiente local.
 
-* Pré-requisitos
-Você precisa ter o Node.js e o npm instalados em sua máquina.
+### 1. Baixar a imagem
 
-### 1. Instalação das Dependências
-Na pasta raiz do projeto, instale todos os pacotes necessários:
+    docker pull clarabany/todo-api:latest
 
-    npm install
+### 2. Executar o container
 
-### 2. Configuração do Banco de Dados
-Esta API utiliza o Knex para gerenciar o banco de dados. Você deve executar a migration para criar a tabela tasks.
-
-    npx knex migrate:latest
-
-### 3. Iniciar o Backend (API)
-Inicie o servidor Express. O backend será executado na porta 3000.
-
-       npm run start
+    docker run -d -p 3000:3000 --name todo-container clarabany/todo-api:latest
 
 * Saída esperada: Example app listening on port 3000
 
