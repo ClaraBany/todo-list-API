@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 
-const cors = require('cors');
-
 const knexConfig = require('./knexfile');
 const knex = require('knex')(knexConfig.development);
 
@@ -10,9 +8,6 @@ const port = 3000
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
-
-app.use(cors()); 
-app.use(express.static('public'));
 
 app.post('/todo', async (req, res) => {
     const title = req.body.title
